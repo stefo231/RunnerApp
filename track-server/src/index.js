@@ -1,6 +1,10 @@
 require("./models/User");
 require("./models/Track");
 const express = require("express");
+//?
+const favicon = require("serve-favicon");
+const path = require("path");
+//?
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
@@ -8,6 +12,9 @@ const trackRoutes = require("./routes/trackRoutes");
 const requireAuth = require("./middlewares/requireAuth");
 
 const app = express();
+//?
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
+//?
 app.use(bodyParser.json());
 app.use(authRoutes);
 app.use(trackRoutes);
@@ -17,12 +24,12 @@ const mongoUri =
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
 });
 mongoose.connection.on("connected", () => {
   console.log("Connected to mongo instance");
 });
-mongoose.connection.on("error", err => {
+mongoose.connection.on("error", (err) => {
   console.error("Error connecting to mongo", err);
 });
 
